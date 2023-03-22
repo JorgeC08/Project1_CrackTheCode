@@ -146,7 +146,7 @@ public class PoliceDepartment {
 	        // Marcamos al underling como arrestado si no lo está
 	        if (!underling.isArrested()) 
 	            underling.setArrested(true);
-
+	        	numberOfArrest++;
 	        // Comparamos la cantidad de underlings del underling actual con el máximo
 	        int underlingsSize = underling.getUnderlings().size();
 	        if (underlingsSize > maxUnderlings) {
@@ -190,9 +190,9 @@ public class PoliceDepartment {
 				writeReport.write("DISSOLVED\n");
 			}
 			writeReport.write(org.toString());
-			writeReport.write("--");
+			writeReport.write("--- \n");
 		}
-		writeReport.write("END OF REPORT");
+		writeReport.write("END OF REPORT \n");
 		writeReport.close();
 		
 	}
