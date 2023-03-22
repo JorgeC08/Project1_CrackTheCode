@@ -19,6 +19,7 @@ public class PoliceDepartment {
 	
 	private List<Organization> criminalOrganizationFiles = new ArrayList<>();
 	private String captain;
+	
 	public PoliceDepartment(String captain) {
 		this.captain = captain;
 	}
@@ -30,53 +31,46 @@ public class PoliceDepartment {
 
 	public void setUpOrganizations(String caseFolder) throws IOException {		
 		
+		// Creamos un folder que esta dirigido a las organizaciones criminales
 		File folder = new File(caseFolder + "/CriminalOrganizations");
 		
 		File[] orgFiles = folder.listFiles();
+		Arrays.sort(orgFiles);
 		
 		if(orgFiles != null) {
-			Arrays.sort(orgFiles);
-			
+				
 			for(File files : orgFiles) {
-				Organization newOrg = new Organization(caseFolder + "/CriminalOrganizations" + files);
+				String filesPath = files.getPath();
+				Organization newOrg = new Organization(filesPath);
 				criminalOrganizationFiles.add(newOrg);	 	
 				}
 		}
 	}
-	
 
 	public String decipherMessage(String caseFolder) throws IOException {
-		
-		Organization organization = new Organization(caseFolder, 5);
+
 		BufferedReader br = new BufferedReader(new FileReader(caseFolder));
-		
+
 		// Guardamos la primera linea para obtener el digiRoot
-		int theDigiRoot = getDigiroot(br.readLine()); 
+		int theKey = getDigiroot(br.readLine().substring(1));
+		theKey--;
+		theKey = criminalOrganizationFiles.get(theKey).getLeaderKey() - 1;
 
-		// Ignoramos la segunda linea ya que no la usaremos
-		br.readLine(); 
-
-		int theKey = organization.getLeaderKey();
-		String linea;
+		String linea = br.readLine();
 		String leadersName = "";
-		
-		
-		while ((linea = br.readLine()) != null) {
 
-			// Salir del loop cuando lleguemos al final del mensaje
-			if (linea.equals("--"))
-				break; 
-				
+		while (!(linea = br.readLine()).equals("--")) {
+
 			// Dividiendo las lineas por las palabras
-			String[] palabras = linea.split(" "); 
-			
+			String[] palabras = linea.split(" ");
+
 			if (palabras.length > theKey) {
 				leadersName += palabras[theKey].charAt(0);
 			} else {
 				leadersName += " ";
 			}
 
-		} 
+		}
 		br.close();
 		return leadersName;
 	}
