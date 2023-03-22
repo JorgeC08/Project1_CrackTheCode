@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 
+import criminals.Member;
 import criminals.Organization;
 import interfaces.List;
 import interfaces.MemberLambda;
@@ -19,7 +20,8 @@ public class PoliceDepartment {
 	
 	private List<Organization> criminalOrganizationFiles = new ArrayList<>();
 	private String captain;
-	
+	private int numberOfArrest = 0;
+	private int theRoot = 0;
 	public PoliceDepartment(String captain) {
 		this.captain = captain;
 	}
@@ -55,8 +57,10 @@ public class PoliceDepartment {
 		int theKey = getDigiroot(br.readLine().substring(1));
 		theKey--;
 		theKey = criminalOrganizationFiles.get(theKey).getLeaderKey() - 1;
-
-		String linea = br.readLine();
+		theRoot = theKey;
+		// Leemos la segunda linea sin guardarla para ignorarla
+		br.readLine();
+		String linea;
 		String leadersName = "";
 
 		while (!(linea = br.readLine()).equals("--")) {
@@ -102,8 +106,71 @@ public class PoliceDepartment {
 	}
 	
 	public void arrest(String leader) {
-			
+	    // Creamos una lista vacía de underlings del líder y una lista para guardar el miembro que contiene al líder
+	    ArrayList<Member> underOfLeader = new ArrayList<>();
+	    List<Member> listContainingLeader;
+
+	    // Recorremos las organizaciones para encontrar el miembro que contiene al líder
+	    for (Organization organization : criminalOrganizationFiles) {
+	        // Utilizamos la función de búsqueda por nickname para encontrar el miembro que contiene al líder
+	        listContainingLeader = organization.organizationTraversal(M -> M.getNickname().toLowerCase().equals(leader.toLowerCase()));
+
+	        // Si encontramos al miembro, marcamos al líder como arrestado y agregamos sus underlings a la lista de underlings del líder
+	        if (!listContainingLeader.isEmpty()) {
+	            Member leaderMember = listContainingLeader.get(0);
+	            leaderMember.setArrested(true);
+
+	            // Agregamos los underlings del líder a la lista 
+	            for (int i = leaderMember.getUnderlings().size() - 1; i >= 0; i--) {
+	                underOfLeader.add(0, leaderMember.getUnderlings().get(i));
+	            }
+
+	            // Llamamos al método arrestHelper con la lista de underlings del líder
+	            arrestHelper(underOfLeader);
+	            break;
+	        }
+	    }
 	}
+
+	public void arrestHelper(ArrayList<Member> underlings) {
+	    // Si la lista de underlings está vacía, terminamos la recursión
+	    if (underlings.isEmpty()) 
+	        return;
+
+	    int maxUnderlings = 0;
+	    int maxPos = 0;
+	    int i = 0;
+
+	    // Recorremos la lista de underlings para encontrar al underling con más underlings a su cargo
+	    for (Member underling : underlings) {
+	        // Marcamos al underling como arrestado si no lo está
+	        if (!underling.isArrested()) 
+	            underling.setArrested(true);
+
+	        // Comparamos la cantidad de underlings del underling actual con el máximo
+	        int underlingsSize = underling.getUnderlings().size();
+	        if (underlingsSize > maxUnderlings) {
+	            maxUnderlings = underlingsSize;
+	            maxPos = i;
+	        }
+
+	        i++;
+	    }
+
+	    // Obtenemos al underling con más underlings y lo eliminamos de la lista de underlings
+	    Member maxUnderling = underlings.get(maxPos);
+	    underlings.remove(maxPos);
+
+	    // Agregamos los underlings del undering con más subordinados a la lista de underlings
+	    for (int j = maxUnderling.getUnderlings().size() - 1; j >= 0; j--) {
+	        underlings.add(0, maxUnderling.getUnderlings().get(j));
+	    }
+
+	    // Llamamos al método arrestHelper con la lista actualizada de underlings
+	    arrestHelper(underlings);
+	}
+
+
 	
 	public void policeReport(String filePath) throws IOException {
 		
