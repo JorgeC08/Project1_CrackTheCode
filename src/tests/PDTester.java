@@ -52,18 +52,12 @@ public class PDTester {
 	 * case 1 folder.
 	 */
 	@Test
-	public void testOrganizationDecypher1() {
-		try {
-			this.PD.getCriminalOrganizations().add(new Organization("Asterism", 3));
-			this.PD.getCriminalOrganizations().add(new Organization("Atlas", 3));
-			this.PD.getCriminalOrganizations().add(new Organization("Canin", 1));
-			String leader = this.PD.decipherMessage("inputFiles/case1/Flyers/Message1");
-			assertEquals("Failed to identify the correct leader.", leader.toLowerCase(), "fox");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			fail();
-		}
+	public void testOrganizationDecypher1() throws IOException {
+		this.PD.getCriminalOrganizations().add(new Organization("Asterism", 3));
+		this.PD.getCriminalOrganizations().add(new Organization("Atlas", 3));
+		this.PD.getCriminalOrganizations().add(new Organization("Canin", 1));
+		String leader = this.PD.decipherMessage("inputFiles/case1/Flyers/Message1");
+		assertEquals("Failed to identify the correct leader.", leader.toLowerCase(), "fox");
 	}
 	/**
 	 * Test deciphering of message from Police Department. 
@@ -72,18 +66,12 @@ public class PDTester {
 	 * case 1 folder.
 	 */
 	@Test
-	public void testOrganizationDecypher2() {
-		try {
-			this.PD.getCriminalOrganizations().add(new Organization("Asterism", 3));
-			this.PD.getCriminalOrganizations().add(new Organization("Atlas", 3));
-			this.PD.getCriminalOrganizations().add(new Organization("Canin", 1));
-			String leader = this.PD.decipherMessage("inputFiles/case1/Flyers/Message2");
-			assertEquals("Failed to identify the correct organization.", leader.toLowerCase(), "paris");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			fail();
-		}
+	public void testOrganizationDecypher2() throws IOException {
+		this.PD.getCriminalOrganizations().add(new Organization("Asterism", 3));
+		this.PD.getCriminalOrganizations().add(new Organization("Atlas", 3));
+		this.PD.getCriminalOrganizations().add(new Organization("Canin", 1));
+		String leader = this.PD.decipherMessage("inputFiles/case1/Flyers/Message2");
+		assertEquals("Failed to identify the correct organization.", leader.toLowerCase(), "paris");
 	}
 	
 	/**
@@ -93,17 +81,11 @@ public class PDTester {
 	 * case 2 folder.
 	 */
 	@Test
-	public void testOrganizationDecypher3() {
-		try {
-			this.PD.getCriminalOrganizations().add(new Organization("Canin", 1));
-			this.PD.getCriminalOrganizations().add(new Organization("Menagerie", 4));
-			String leader = this.PD.decipherMessage("inputFiles/case2/Flyers/Message4");
-			assertEquals("Failed to identify the correct organization.", leader.toLowerCase(), "red panda");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			fail();
-		}
+	public void testOrganizationDecypher3() throws IOException {
+		this.PD.getCriminalOrganizations().add(new Organization("Canin", 1));
+		this.PD.getCriminalOrganizations().add(new Organization("Menagerie", 4));
+		String leader = this.PD.decipherMessage("inputFiles/case2/Flyers/Message4");
+		assertEquals("Failed to identify the correct organization.", leader.toLowerCase(), "red panda");
 	}
 	
 	/**
@@ -111,7 +93,7 @@ public class PDTester {
 	 * the organization Canin in case 1.
 	 */
 	@Test
-	public void testOrganizationSetup1() {
+	public void testOrganizationSetup1() throws IOException {
 		
 		// Coyote
 		Member coyote = new Member("Bruce Wilde", "Coyote", "Beta", "Wolf");
@@ -144,12 +126,7 @@ public class PDTester {
 		
 		Member result_boss = null;
 		
-		try {
-			PD.setUpOrganizations("inputFiles/case1");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		PD.setUpOrganizations("inputFiles/case1");
 		
 		for(Organization org: PD.getCriminalOrganizations()) {
 			if(org.getName().equals("Canin")) {
@@ -169,7 +146,7 @@ public class PDTester {
 	 * the organization Asterismin case 1.
 	 */
 	@Test
-	public void testOrganizationSetup2() {
+	public void testOrganizationSetup2() throws IOException {
 		
 		// Virgo
 		Member virgo = new Member("Ethan Mitchell", "Virgo", "Star", "Leo");
@@ -203,12 +180,7 @@ public class PDTester {
 		
 		Member result_boss = null;
 		
-		try {
-			PD.setUpOrganizations("inputFiles/case1");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		PD.setUpOrganizations("inputFiles/case1");
 		
 		for(Organization org: PD.getCriminalOrganizations()) {
 			if(org.getName().equals("Asterism")) {
@@ -227,80 +199,63 @@ public class PDTester {
 	 * step will fail.
 	 */
 	@Test
-	public void testOrganizationSetup3() {
-		try {
-			PD.setUpOrganizations("inputFiles/case1");
-			List<Organization> orgs = PD.getCriminalOrganizations();
-			assertTrue("Criminal organizations aren't placed in the correct position. The files should be read in"
-					+ " alphabetical order and added in that order as well.", orgs.get(0).getName().equals("Asterism") && 
-					orgs.get(1).getName().equals("Atlas") && orgs.get(2).getName().equals("Canin"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void testOrganizationSetup3() throws IOException {
+		PD.setUpOrganizations("inputFiles/case1");
+		List<Organization> orgs = PD.getCriminalOrganizations();
+		assertTrue("Criminal organizations aren't placed in the correct position. The files should be read in"
+				+ " alphabetical order and added in that order as well.", orgs.get(0).getName().equals("Asterism") && 
+				orgs.get(1).getName().equals("Atlas") && orgs.get(2).getName().equals("Canin"));
 	}
 	
 	/**
 	 * Test the arresting process. Check that the correct people are arrested when we decipher Message1 form case 1.
 	 */
 	@Test
-	public void testArrest1() {
-		try {
-			PD.setUpOrganizations("inputFiles/case1");
-			String leader = this.PD.decipherMessage("inputFiles/case1/Flyers/Message1");
-			PD.arrest(leader);
-			List<Member> orgMembers = PD.getCriminalOrganizations().get(2).organizationTraversal((M) -> true);
-			List<Member> expected = new ArrayList<Member>(6);
-			expected.add(new Member("Ben Smith", "Fox", "Beta", "Wolf"));
-			expected.add(new Member("Gary Larry", "Chihuahua", "Omega", "Fox"));
-			expected.add(new Member("Bary Larry", "Terrier", "Omega", "Fox"));
-			expected.add(new Member("Greg Johnson", "Bulldog", "Omega", "Fox"));
-			expected.add(new Member("Billy Child", "Dingo", "Omega", "Fox"));
-			expected.add(new Member("Gina Jones", "Poodle", "Omega", "Fox"));
-			
-			int count = 0;
-			for(Member m: orgMembers) {
-				if(expected.contains(m) && m.isArrested()) {
-					count++;
-				}
+	public void testArrest1() throws IOException {
+		PD.setUpOrganizations("inputFiles/case1");
+		String leader = this.PD.decipherMessage("inputFiles/case1/Flyers/Message1");
+		PD.arrest(leader);
+		List<Member> orgMembers = PD.getCriminalOrganizations().get(2).organizationTraversal((M) -> true);
+		List<Member> expected = new ArrayList<Member>(6);
+		expected.add(new Member("Ben Smith", "Fox", "Beta", "Wolf"));
+		expected.add(new Member("Gary Larry", "Chihuahua", "Omega", "Fox"));
+		expected.add(new Member("Bary Larry", "Terrier", "Omega", "Fox"));
+		expected.add(new Member("Greg Johnson", "Bulldog", "Omega", "Fox"));
+		expected.add(new Member("Billy Child", "Dingo", "Omega", "Fox"));
+		expected.add(new Member("Gina Jones", "Poodle", "Omega", "Fox"));
+		
+		int count = 0;
+		for(Member m: orgMembers) {
+			if(expected.contains(m) && m.isArrested()) {
+				count++;
 			}
-			System.out.println(orgMembers);
-			assertEquals("Failed arrest operation. Did not arrest the correct amount of people or didn't arrest the correct people.", expected.size(), count);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+		System.out.println(orgMembers);
+		assertEquals("Failed arrest operation. Did not arrest the correct amount of people or didn't arrest the correct people.", expected.size(), count);
 	}
 	/**
 	 * Test the arresting process. Check that the correct people are arrested when we decipher Message5 form case 2.
 	 */
 	@Test
-	public void testArrest2() {
-		try {
-			PD.setUpOrganizations("inputFiles/case2");
-			String leader = this.PD.decipherMessage("inputFiles/case2/Flyers/Message5");
-			PD.arrest(leader);
-			List<Member> orgMembers = PD.getCriminalOrganizations().get(1).organizationTraversal((M) -> true);
-			List<Member> expected = new ArrayList<Member>(6);
-			expected.add(new Member("Elizabeth Wilson", "Gorilla", "B", "Elephant"));
-			expected.add(new Member("John Smith", "Tiger", "C", "Gorilla"));
-			expected.add(new Member("Alexander Taylor", "Cheetah", "D", "Tiger"));
-			expected.add(new Member("William Lee", "Red Panda", "D", "Tiger"));
-			
-			int count = 0;
-			for(Member m: orgMembers) {
-				if(expected.contains(m) && m.isArrested()) {
-					count++;
-				}
+	public void testArrest2() throws IOException {
+		PD.setUpOrganizations("inputFiles/case2");
+		String leader = this.PD.decipherMessage("inputFiles/case2/Flyers/Message5");
+		PD.arrest(leader);
+		List<Member> orgMembers = PD.getCriminalOrganizations().get(1).organizationTraversal((M) -> true);
+		List<Member> expected = new ArrayList<Member>(6);
+		expected.add(new Member("Elizabeth Wilson", "Gorilla", "B", "Elephant"));
+		expected.add(new Member("John Smith", "Tiger", "C", "Gorilla"));
+		expected.add(new Member("Alexander Taylor", "Cheetah", "D", "Tiger"));
+		expected.add(new Member("William Lee", "Red Panda", "D", "Tiger"));
+		
+		int count = 0;
+		for(Member m: orgMembers) {
+			if(expected.contains(m) && m.isArrested()) {
+				count++;
 			}
-			System.out.println(orgMembers);
-			assertEquals("Failed arrest operation. Did not arrest the correct amount of people or didn't arrest the correct people.", expected.size(), count);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+		System.out.println(orgMembers);
+		assertEquals("Failed arrest operation. Did not arrest the correct amount of people or didn't arrest the correct people.", expected.size(), count);
 	}
 
 	/**
