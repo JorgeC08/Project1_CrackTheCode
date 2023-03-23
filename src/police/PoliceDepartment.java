@@ -208,7 +208,7 @@ public class PoliceDepartment {
 	    Member maxUnderling = underlings.get(maxPos);
 	    underlings.remove(maxPos);
 
-	    // Agregamos los underlings del underling con más subordinados a la lista de underlings
+	    // Agregamos los underlings del underling con más underlings a la lista de underlings
 	    
 	    for (int j = maxUnderling.getUnderlings().size() - 1; j >= 0; j--) {
 	        underlings.add(0, maxUnderling.getUnderlings().get(j));
