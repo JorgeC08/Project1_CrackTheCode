@@ -14,12 +14,13 @@ import police.PoliceDepartment;
 public class ArrestOperation {
 
 	public static void main(String[] args) throws IOException {
-		
-		PoliceDepartment pd = new PoliceDepartment("Captain Morgan");
-		// Case 1  
+        // Crear instancia de departamento de policía con un capitán asignado
+		PoliceDepartment pd = new PoliceDepartment("Captain Morgan"); 
+        // Configurar las organizaciones criminales con un archivo de entrada
 		pd.setUpOrganizations("inputFiles/case1");
 		String leader = pd.decipherMessage("inputFiles/case1/Flyers/Message1");
 		pd.arrest(leader);
+		// Genera el reporte policial y se guardaen results bajo Report.txt
 		pd.policeReport("results/Report.txt");
 	}
 }
