@@ -17,10 +17,17 @@ public class ArrestOperation {
         // Crear instancia de departamento de policía con un capitán asignado
 		PoliceDepartment pd = new PoliceDepartment("Captain Morgan"); 
         // Configurar las organizaciones criminales con un archivo de entrada
-		pd.setUpOrganizations("inputFiles/case1");
-		String leader = pd.decipherMessage("inputFiles/case1/Flyers/Message1");
-		pd.arrest(leader);
-		// Genera el reporte policial y se guardaen results bajo Report.txt
-		pd.policeReport("results/Report.txt");
+		File flyersFolder = new File("inputFiles/case2/Flyers"); 
+
+		pd.setUpOrganizations("inputFiles/case2");
+		
+		for(File code : flyersFolder.listFiles()) {
+			String leaders = pd.decipherMessage(code.getPath());
+			pd.arrest(leaders);
+			
+		}
+		pd.policeReport("results/Report5.txt");
+	
 	}
+	
 }

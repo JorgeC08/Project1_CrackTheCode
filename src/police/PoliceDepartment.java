@@ -160,7 +160,7 @@ public class PoliceDepartment {
 	        if (!theList.isEmpty()) {
 	            theLeader = theList.get(0);
 	            theLeader.setArrested(true);
-
+	            numberOfArrest++;
 	            // Agregamos los underlings del líder a la lista de underlings del líder arrestado
 	            List<Member> underlings = theLeader.getUnderlings();
 	            for (int i = 0; i < underlings.size(); i++) {
@@ -189,11 +189,10 @@ public class PoliceDepartment {
 	    // Recorremos la lista de underlings para encontrar al underling con más underlings a su cargo
 	    for (Member underling : underlings) {
 	        // Marcamos al underling como arrestado si no lo está
-	        if (!underling.isArrested()) 
+	        if (!underling.isArrested()) {
 	            underling.setArrested(true);
-	        
-	        numberOfArrest++;
-	        
+	        	numberOfArrest++;
+	        }
 	        // Comparamos la cantidad de underlings del underling actual con el máximo
 	        int underlingsListSize = underling.getUnderlings().size();
 	        if (maxUnderlings < underlingsListSize) {
@@ -206,12 +205,12 @@ public class PoliceDepartment {
 
 	    // Obtenemos al underling con más underlings y lo eliminamos de la lista de underlings
 	    Member maxUnderling = underlings.get(maxPos);
-	    underlings.remove(maxPos);
+	    underlings.clear();
 
 	    // Agregamos los underlings del underling con más underlings a la lista de underlings
 	    
 	    for (int j = maxUnderling.getUnderlings().size() - 1; j >= 0; j--) {
-	        underlings.add(0, maxUnderling.getUnderlings().get(j));
+	        underlings.add(maxUnderling.getUnderlings().get(j));
 	    }
 
 	    // Llamamos al método arrestHelper con la lista actualizada de underlings
